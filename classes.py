@@ -1,11 +1,32 @@
 #!/usr/bin/env python
 
+"""
+classes.py: class definitions for occampy
 
 """
-Collection of Classes needed in OccamPy2D
 
-"""
+class Model():
+	"""
+	Model class.
+	Methods: initialisation, output
+	Attributes: geometry, values
+	
+	"""
+	
 
+class Data():
+	"""
+	Data-class. 
+	Methods: input/output
+	Attributes: stations, errors, values
 
-import numpy as np
+	"""
+class Parameters():
+	"""
+	Paramaters-class.
+	Methods: populate parameters
+	Attributes: current RMS, target RMS, iteration number, max iterations,
+	current Lagrange multiplier, step-size, debug level, roughness,
+	convergence state
 
+	"""
