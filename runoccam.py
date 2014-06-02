@@ -11,8 +11,6 @@ runoccam.py: the main file to be called for running an Occam inversion
 
 of.proc_cmd_arg()
 
-data_inputs = {}
-
 of.get_inputs()
 
 of.initialise_params()

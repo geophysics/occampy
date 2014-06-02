@@ -8,25 +8,25 @@ classes.py: class definitions for occampy
 class Model():
 	"""
 	Model class.
-	Methods: initialisation, output
+	Methods: initialisation, write model output file
 	Attributes: geometry, values
 	
 	"""
 	
 
-class Data():
+class Resp():
 	"""
-	Data-class. 
-	Methods: input/output
-	Attributes: stations, errors, values
+	Response class for synthetic and measured data. 
+	Methods: write response output file
+	Attributes: stations, errors, values for data, values for synth response
 
 	"""
-class Parameters():
+class Para():
 	"""
 	Paramaters-class.
-	Methods: populate parameters
-	Attributes: current RMS, target RMS, iteration number, max iterations,
-	current Lagrange multiplier, step-size, debug level, roughness,
-	convergence state
+	Methods: populate parameters, finish iteration
+	Attributes: previous RMS, current RMS, target RMS, iteration number, max iterations,
+	current Lagrange multiplier, previous Lagrange multiplier, step-size, debug level, current roughness,
+	previous roughness, convergence state, data file name
 
 	"""

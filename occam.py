@@ -9,15 +9,16 @@ import classes.py as *
 import functions.py as of
 
 def occam()
-	while it <= max_it and del_rms > min_change:
-		resp = []
-		resp = occam_fwd(data_arrays{'model_0'})
-		of.calc_deviation(data_arrays{'data'},resp)
-		of.calc_pen_mat(data_arrays{'model_0'},params)
-		continue = True
-		while continue is True:
+	while Para.it <= Para.max_it and Para.del_rms > Para.min_change:
+		of.calc_jtj(Resp.data)
+		Resp.synth = occam_fwd(Model.values)
+		of.calc_deviation(Model.values,Resp.synth)
+		of.calc_pen_mat(Resp.data,Para)
+		continue = False
+		while continue is False:
 			of.calc_new_model()
 			of.calc_roughness()
 			of.check_if_continue()
-		of.commit_new_params()
-		of.write_iteration()
+		Para.iteration()
+		Resp.write(resp_fn)
+		Model.write(model_fn)
