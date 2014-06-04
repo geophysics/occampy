@@ -7,50 +7,72 @@ functions.py: functions called during the occampy inversion
 
 # functions used in the runoccam script
 
-def proc_cmd_arg(Para)
-	# reads command arguments and assigns to variables
+def proc_cmd_arg(parameters)
+    # reads command arguments and assigns to variables
 
 
-def get_inputs(Para)
-	# reads input files and creates data matrix
+def get_inputs(parameters)
+    # reads input files and creates data matrix
 
 
-def initialise_params(Para)
-	# set initial values for first iteration
+def initialise_params(parameters)
+    # set initial values for first iteration
 
 
-def write_outputs(Resp.synth,Model)
-	# write model and response outputs to file
+def write_outputs(data,model)
+    # write model and response outputs to file
 
 
 # functions called by the occam script
 
-def calc_jtj(Resp.data)
-	# construct the matrices WJTWJ and WJTWD, where WJ is the matrix of partials, WD is the weighted data
+def construct_matrices(data,parameters)
+    # construct the Jacobian matrices W.J.trans(W.J) and W.J.trans(W.D)
+    calculate_jacobian(data,parameters)
+    construct_WJTWJ()
+    construct_WJTWD()
+
+def calc_rms_misfit(data,response)
+    # calculate the RMS error between new forward response and data
 
 
-def calc_deviation(Resp.data,Resp.synth)
-	# calculate the RMS error between new forward response and data
+def calc_penalty_matrix(data,parameters)
+    # construct penalty matrix
 
 
-def calc_pen_matrix(Resp.data,Para)
-	# construct penalty matrix
+def update_model(parameters)
+    # run search for new Lagrange multiplier and model
 
 
-def calc_new_model(Para)
-	# run search for new Lagrange multiplier and model
+def calc_roughness(model)
+    # calculate roughness of new model
 
 
-def calc_roughness(Model.values)
-	# calculate roughness of new model
-
-
-def check_if_continue(Para)
-	# run checks on convergence and smoothness of model
-
+def check_convergence(parameters)
+    # run checks on convergence and smoothness of model
 
 
 # functions called from functions in this file
 
-def minbrk()
-	# search for Lagrange multiplier which minimises the RMS misfit
+def bracket_minimum_rms(parameters,model,data)
+    # search for Lagrange multiplier which minimises the RMS misfit
+    mu_one = np.log10(parameters.mu_current) - 1
+    mu_two = np.log10(parameters.mu_current)
+
+def minimise_rms_function(parameters,model,data)
+    # use a golden section search to find the minimum of the function
+    # of RMS misfit vs Lagrange multiplier
+
+def find_intersect()
+    # function to find the point at which a given function reaches
+    # a certain value. Used to smooth the model once an RMS in the desired
+    # tolerance has been found
+
+def calculate_jacobian()
+    # calculate the Jacobian of a matrix
+
+def construct_WJTWJ()
+    # constructs the W.J.trans(W.J) matrix, where W.J is the weighted Jacobian
+
+def construct_WJTWD()
+    # constructs the W.J.trans(W.D) matrix, where W.J is the weighted Jacobian
+    # and D is the data matrix

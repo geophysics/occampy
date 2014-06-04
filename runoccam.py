@@ -1,20 +1,26 @@
 #!/usr/bin/env python
 
-import functions.py as of
-import occam as *
+import functions as 2D_occam_fn
+import occam as main
 
 """
-runoccam.py: the main file to be called for running an Occam inversion
+runoccam.py: the main file to be called for running an Occam inversion.
+
+    Usage: runnoccam INPUT_FILE SETTINGS_FILE
 
 """
 
 
-of.proc_cmd_arg()
+2D_occam_fn.proc_cmd_arg()
 
-of.get_inputs()
+data = Data()
+model = Model()
+parameters = Para()
 
-of.initialise_params()
+2D_occam_fn.get_inputs()
 
-occam(data_arrays)
+2D_occam_fn.initialise_params()
 
-of.write_outputs()
+main.occam_loop(data_arrays)
+
+2D_occam_fn.write_outputs()
