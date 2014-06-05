@@ -39,9 +39,27 @@ def calc_penalty_matrix(data,parameters)
     # construct penalty matrix
 
 
-def update_model(parameters)
+def update_model(parameters,model,data)
     # run search for new Lagrange multiplier and model
-
+    bracket_minimum_rms(parameters,model,data)
+    if parameters.bracket_rms < parameters.rms_tolerance:
+        parameters.iteration_mu = parameters.bracket_mu
+    else:
+        minimise_rms_function(parameters,model,data)
+        if parameters.minimise_rms < parameters.rms_tolerance:
+            paramaters.iteration_mu = parameters.minimise_mu
+        else:
+            parameters.stepsize = parameters.stepsize*2
+            return
+    find_intersect(parameters,model,data)
+    calc_roughness(model)
+    if parameters.roughness > parameters.last_roughness*1.01:
+        print 'Roughness problems, cutting stepsize'
+        parameters.stepsize = parameters.stepsize*2
+        return
+    else:
+        print 'Success'
+        converging = True
 
 def calc_roughness(model)
     # calculate roughness of new model
@@ -49,7 +67,7 @@ def calc_roughness(model)
 
 def check_convergence(parameters)
     # run checks on convergence and smoothness of model
-
+    
 
 # functions called from functions in this file
 
@@ -62,7 +80,7 @@ def minimise_rms_function(parameters,model,data)
     # use a golden section search to find the minimum of the function
     # of RMS misfit vs Lagrange multiplier
 
-def find_intersect()
+def find_intersect(parameters,model,data)
     # function to find the point at which a given function reaches
     # a certain value. Used to smooth the model once an RMS in the desired
     # tolerance has been found

@@ -19,8 +19,6 @@ def occam_loop()
         converging = False
         while converging is False:
             2D_occam_fn.update_model(model)
-            2D_occam_fn.calc_roughness()
-            2D_occam_fn.check_convergence()
         parameters.commit_values()
         response.write(parameters.response_filename)
         model.write(parameters.model_filename)
