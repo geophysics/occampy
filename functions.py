@@ -5,6 +5,8 @@ functions.py: functions called during the occampy inversion
 
 """
 
+import sys
+
 # functions used in the runoccam script
 
 def proc_cmd_arg(parameters)
@@ -40,22 +42,37 @@ def calc_penalty_matrix(data,parameters)
 
 
 def update_model(parameters,model,data)
-    # run search for new Lagrange multiplier and model
+    # run search for new Lagrange multiplier and associated model
     bracket_minimum_rms(parameters,model,data)
-    if parameters.bracket_rms < parameters.rms_tolerance:
+    if parameters.bracket_rms <= parameters.rms_tolerance:
         parameters.iteration_mu = parameters.bracket_mu
+        parameters.smoothing = True
     else:
         minimise_rms_function(parameters,model,data)
-        if parameters.minimise_rms < parameters.rms_tolerance:
-            paramaters.iteration_mu = parameters.minimise_mu
+        if parameters.minimise_rms <= parameters.rms_tolerance:
+            paramaters.iteration_rms = parameters.minimise_rms
+            parameters.smoothing = True
         else:
-            parameters.stepsize = parameters.stepsize*2
-            return
-    find_intersect(parameters,model,data)
+            if parameters.iteration_rms <= parameters.previous_rms:
+                print 'Convergence problems, cutting stepsize'
+                if parameters.stepsize > 10e-5:
+                    print 'Convergence problems, cutting stepsize'
+                    parameters.stepsize = parameters.stepsize/2
+                    return
+                else:
+                    print 'Exiting, convergence problems'
+                    sys.exit
+            else:
+                parameters.iteration_rms = parameters.minimise_rms
+    if parameters.smoothing is True:
+        find_intersect(parameters,model,data)
     calc_roughness(model)
     if parameters.roughness > parameters.last_roughness*1.01:
         print 'Roughness problems, cutting stepsize'
-        parameters.stepsize = parameters.stepsize*2
+        parameters.stepsize = parameters.stepsize/2
+        if parameters.stepsize < 10e-5:
+            print 'Exiting, convergence problems'
+            sys.exit
         return
     else:
         print 'Success'
@@ -67,6 +84,7 @@ def calc_roughness(model)
 
 def check_convergence(parameters)
     # run checks on convergence and smoothness of model
+
     
 
 # functions called from functions in this file
